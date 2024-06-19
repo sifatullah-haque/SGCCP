@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/authentication/ApiService.dart';
 import 'package:test/authentication/constant.dart';
@@ -82,65 +80,67 @@ class _NewAuthenticationState extends State<NewAuthentication> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/bg.jpg"),
-            fit: BoxFit.fitHeight,
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Center(
-              child: Column(
-                children: [
-                  SizedBox(height: 100),
-                  // logo
-                  const Center(
-                    child: Image(
-                      image: AssetImage(
-                        "assets/logo.png",
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/bg.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 100),
+                      // logo
+                      const Center(
+                        child: Image(
+                          image: AssetImage(
+                            "assets/logo.png",
+                          ),
+                          height: 120.0,
+                        ),
                       ),
-                      height: 120.0,
-                    ),
+                      const SizedBox(height: 30),
+                      // email field
+                      InputField(
+                        controller: emailController,
+                        hintText: "Email",
+                        labelText: "Email",
+                      ),
+                      const SizedBox(height: 20),
+                      // password field
+                      InputField(
+                        controller: passwordController,
+                        hintText: "Password",
+                        labelText: "Password",
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 20),
+                      // login button
+                      LoadingButton(
+                        isLoading: isLoading,
+                        text: 'Login',
+                        onPressed: () {
+                          final email = emailController.text;
+                          final password = passwordController.text;
+                          login(context, email, password);
+                        },
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 30),
-
-                  // email field
-                  InputField(
-                    controller: emailController,
-                    hintText: "Email",
-                    labelText: "Email",
-                  ),
-                  SizedBox(height: 20),
-
-                  // password field
-                  InputField(
-                    controller: passwordController,
-                    hintText: "Password",
-                    labelText: "Password",
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 20),
-
-                  // login button
-                  LoadingButton(
-                    isLoading: isLoading,
-                    text: 'Login',
-                    onPressed: () {
-                      final email = emailController.text;
-                      final password = passwordController.text;
-                      login(context, email, password);
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+          if (isLoading) const FullScreenLoader(),
+        ],
       ),
     );
   }

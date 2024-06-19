@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class InputField extends StatelessWidget {
   final TextEditingController controller;
@@ -59,16 +60,14 @@ class LoadingButton extends StatelessWidget {
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            Color(0xff034d77),
+            const Color(0xff034d77),
           ),
         ),
         onPressed: isLoading ? null : onPressed,
-        child: isLoading
-            ? const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              )
-            : Text(text,
-                style: const TextStyle(color: Colors.white, fontSize: 16)),
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
       ),
     );
   }
@@ -79,8 +78,30 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Center(
+      child: Lottie.asset(
+        'assets/loader.json', // Path to your Lottie file
+        width: 150,
+        height: 150,
+      ),
+    );
+  }
+}
+
+class FullScreenLoader extends StatelessWidget {
+  const FullScreenLoader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: Lottie.asset(
+          'assets/loader.json', // Path to your Lottie file
+          width: 150,
+          height: 150,
+        ),
+      ),
     );
   }
 }

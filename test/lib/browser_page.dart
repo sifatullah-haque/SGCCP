@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:lottie/lottie.dart';
 
 class BrowserPage extends StatefulWidget {
   final String url;
@@ -12,11 +13,27 @@ class BrowserPage extends StatefulWidget {
 
 class _BrowserPageState extends State<BrowserPage> {
   late final WebViewController _controller;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()..loadRequest(Uri.parse(widget.url));
+    _controller = WebViewController()
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) {
+            setState(() {
+              _isLoading = true;
+            });
+          },
+          onPageFinished: (_) {
+            setState(() {
+              _isLoading = false;
+            });
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url));
   }
 
   Future<void> _goBack() async {
@@ -48,31 +65,39 @@ class _BrowserPageState extends State<BrowserPage> {
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: WebViewWidget(controller: _controller),
-          ),
-          Container(
-            color: Color(0xff034d77),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: _goBack,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.arrow_forward, color: Colors.white),
-                    onPressed: _goForward,
-                  ),
-                ],
+          WebViewWidget(controller: _controller),
+          if (_isLoading)
+            Center(
+              child: Lottie.asset(
+                'assets/loader.json', // path to your Lottie file
+                width: 120,
+                height: 120,
+                fit: BoxFit.fill,
               ),
             ),
-          ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 60,
+        color: const Color(0xff034d77),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: _goBack,
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                onPressed: _goForward,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

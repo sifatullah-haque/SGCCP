@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'browser_page.dart';
 import 'authentication/authentication.dart';
@@ -24,65 +25,76 @@ class HomePage extends StatelessWidget {
             style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color(0xff034d77),
+        actions: [
+          GestureDetector(
+              onTap: () => _logout(context),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: Icon(Icons.logout_outlined,
+                    color: Colors.white, size: 30.0),
+              )),
+        ],
       ),
-      body: Padding(
+      body: const Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ContainerWithInfo(
                     text: "Regular\nGolfing",
-                    url: "https://t6.sgccp-bd.com/1/portal/golfing-bookings"),
+                    url: "https://app.sgccp-bd.com/1/portal/golfing-bookings"),
                 ContainerWithInfo(
                     text: "Tournament \nRegistration",
                     url:
-                        "https://t6.sgccp-bd.com/1/portal/golfing-tournament-bookings"),
+                        "https://app.sgccp-bd.com/1/portal/golfing-tournament-bookings"),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ContainerWithInfo(
                     text: "Room Booking",
-                    url: "https://t6.sgccp-bd.com/1/portal/room-bookings"),
+                    url: "https://app.sgccp-bd.com/1/portal/room-bookings"),
                 ContainerWithInfo(
                     text: "Notices",
-                    url: "https://t6.sgccp-bd.com/1/portal/notices"),
+                    url: "https://app.sgccp-bd.com/1/portal/notices"),
               ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ContainerWithInfo(
-                    text: "Bills", url: "https://t6.sgccp-bd.com/1/portal"),
+                    text: "Bills", url: "https://app.sgccp-bd.com/1/portal"),
                 ContainerWithInfo(
                     text: "Pay\nAdvance",
                     url:
-                        "https://t6.sgccp-bd.com/1/portal/advance-payments/create"),
+                        "https://app.sgccp-bd.com/1/portal/advance-payments/create"),
               ],
             ),
-            const SizedBox(height: 50),
-            Center(
-              child: GestureDetector(
-                onTap: () => _logout(context),
-                child: Container(
-                  height: 50.0,
-                  width: 120.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.purple,
-                  ),
-                  child: const Center(
-                      child: Text("Logout",
-                          style: TextStyle(color: Colors.white, fontSize: 18))),
-                ),
-              ),
-            )
+            SizedBox(height: 50),
+            // Center(
+            //   child: GestureDetector(
+            //     onTap: () => _logout(context),
+            //     child: Container(
+            //       height: 50.0,
+            //       width: 120.0,
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(10),
+            //         color: Colors.orange,
+            //       ),
+            //       child: const Center(
+            //           child: Text("Logout",
+            //               style: TextStyle(color: Colors.white, fontSize: 18))),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),
