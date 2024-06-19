@@ -14,6 +14,7 @@ class BrowserPage extends StatefulWidget {
 class _BrowserPageState extends State<BrowserPage> {
   late final WebViewController _controller;
   bool _isLoading = true;
+  bool _isError = false;
 
   @override
   void initState() {
@@ -24,11 +25,18 @@ class _BrowserPageState extends State<BrowserPage> {
           onPageStarted: (_) {
             setState(() {
               _isLoading = true;
+              _isError = false;
             });
           },
           onPageFinished: (_) {
             setState(() {
               _isLoading = false;
+            });
+          },
+          onWebResourceError: (error) {
+            setState(() {
+              _isLoading = false;
+              _isError = true;
             });
           },
         ),
@@ -67,14 +75,27 @@ class _BrowserPageState extends State<BrowserPage> {
       ),
       body: Stack(
         children: [
-          WebViewWidget(controller: _controller),
+          Visibility(
+            visible: !_isError,
+            child: WebViewWidget(controller: _controller),
+          ),
           if (_isLoading)
             Center(
               child: Lottie.asset(
                 'assets/loader.json', // path to your Lottie file
-                width: 120,
-                height: 120,
+                width: 150,
+                height: 150,
                 fit: BoxFit.fill,
+              ),
+            ),
+          if (_isError)
+            Center(
+              child: Text(
+                'Connect to internet to access the app',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
               ),
             ),
         ],
