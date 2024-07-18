@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'browser_page.dart';
 import 'authentication/authentication.dart';
@@ -8,9 +7,14 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<void> _logout(BuildContext context) async {
+    // Clear local shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
 
+    // Clear cookies and session data in WebView
+    await BrowserPage.clearCookies();
+
+    // Navigate to the login screen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const NewAuthentication()),
@@ -37,7 +41,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: const Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

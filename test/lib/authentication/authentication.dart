@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/authentication/ApiService.dart';
 import 'package:test/authentication/constant.dart';
+import 'package:test/browser_page.dart';
 import 'package:test/homepage.dart';
 
 class NewAuthentication extends StatefulWidget {
@@ -50,7 +51,9 @@ class _NewAuthenticationState extends State<NewAuthentication> {
       // Navigate to homepage
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(
+            builder: (context) =>
+                BrowserPage(url: 'https://app.sgccp-bd.com/1/portal')),
       );
     } else {
       // Show error dialog
